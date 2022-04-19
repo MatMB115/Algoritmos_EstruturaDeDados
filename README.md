@@ -14,4 +14,5 @@
 ## Quick Sort
  Em desenvolvimento.
 
+***
 Matheus Martins Batista - 2019005687 - 2022
