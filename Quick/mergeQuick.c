@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
 
 #include "mergeQuick.h"
 
@@ -71,9 +70,10 @@ void mergeSort(int *vet, int inicio, int fim){
     int meio;
 
     if(inicio < fim){
-        meio = abs((inicio+fim)/2);
+        meio = (inicio + fim)/2;
         mergeSort(vet, inicio, meio);
         mergeSort(vet, meio + 1, fim);
+        merge(vet, inicio, meio, fim);
     }
 }
 //Função Mergesort Recursiva
@@ -81,23 +81,34 @@ void mergeSort(int *vet, int inicio, int fim){
 void merge(int *vet, int inicio, int meio, int fim){
     int mV1 = inicio; //Primeira metade do vetor
     int mV2 = meio + 1; //Segunda metade do vetor
-    int *vetAux = (int*) malloc(((fim-inicio)+1)*sizeof(int)); //Vetor para guardar os elementos ordenados
-    int i = 0;
+    int *vetAux = (int*)malloc(((fim - inicio) + 1) * sizeof(int)); //Vetor para guardar os elementos ordenados
+    int i = 0, k;
 
-    while(mV1 <= meio && mV2 <= fim){
+    while(mV1 <= meio && mV2 <= fim){ //Comparar os elementos como uma pilha de cartas maiores e menores
         if(vet[mV1] < vet[mV2]){
             vetAux[i] = vet[mV1];
             mV1++;
         }
         else{
             vetAux[i] = vet[mV2];
-            vet[mV2]++;
+            mV2++;
         }
         i++;
     }
+    //Copiar o restantes dos elementos da primeira metade ordenada
+    for(k = mV1; k <= meio; k++){
+        vetAux[i] = vet[k];
+        i++;
+    }
 
-    for(i = 0; i <= (fim-inicio); i++){
-        vet[i] = vetAux[i];
+    //Copiar o restantes dos elementos da primeira metade ordenada
+    for(k = mV2; k <= fim; k++){
+        vetAux[i] = vet[k];
+        i++;
+    }
+
+    for(k = inicio; k <= fim; k++){
+        vet[k] = vetAux[k - inicio];
     }
     free(vetAux);
 }
@@ -123,17 +134,16 @@ int particiona(int *vet, int inicio, int fim){
     for(i = inicio + 1; i <= fim; i++){
         if(vet[i] < pivo){
             pos++;
-            if(pos != i){
+            if(i != pos){
                 aux = vet[i];
                 vet[i] = vet[pos];
                 vet[pos] = aux;
             }
         }
-        aux = vet[inicio];
-        vet[inicio] = vet[pos];
-        vet[pos] = aux;
     }
-
+    aux = vet[inicio];
+    vet[inicio] = vet[pos];
+    vet[pos] = aux;
     return pos;
 }
 //Função que ordena o elemento pivô.
