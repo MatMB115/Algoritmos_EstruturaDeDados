@@ -1,0 +1,3 @@
+C:/Users/mathe/CLionProjects/Select_Insert/cmake-build-debug/CMakeFiles/Select_Insert.dir
+C:/Users/mathe/CLionProjects/Select_Insert/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/mathe/CLionProjects/Select_Insert/cmake-build-debug/CMakeFiles/rebuild_cache.dir

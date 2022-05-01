@@ -1,0 +1,19 @@
+# ninja log v5
+39	345	6724569064068595	CMakeFiles/Select_Insert.dir/selecaoInsercao.c.obj	451e9d55fa88f62f
+7	280	6724601361269629	CMakeFiles/Select_Insert.dir/main.c.obj	f83bea3032622a80
+282	602	6724601364419583	Select_Insert.exe	203012e058f463b4
+8	300	6724602037317314	CMakeFiles/Select_Insert.dir/main.c.obj	f83bea3032622a80
+301	643	6724602040647462	Select_Insert.exe	203012e058f463b4
+9	496	6724605362512960	CMakeFiles/Select_Insert.dir/main.c.obj	f83bea3032622a80
+498	956	6724605366962013	Select_Insert.exe	203012e058f463b4
+6	405	6724605976889390	CMakeFiles/Select_Insert.dir/main.c.obj	f83bea3032622a80
+406	896	6724605981549391	Select_Insert.exe	203012e058f463b4
+8	381	6724607022758664	CMakeFiles/Select_Insert.dir/selecaoInsercao.c.obj	451e9d55fa88f62f
+383	852	6724607027408676	Select_Insert.exe	203012e058f463b4
+5	1266	6725955568935395	CMakeFiles/Select_Insert.dir/selecaoInsercao.c.obj	451e9d55fa88f62f
+1267	3290	6725955589274898	Select_Insert.exe	203012e058f463b4
+7	430	6726945534192956	CMakeFiles/Select_Insert.dir/main.c.obj	f83bea3032622a80
+432	1369	6726945543483987	Select_Insert.exe	203012e058f463b4
+19	1550	6727086491047558	CMakeFiles/Select_Insert.dir/selecaoInsercao.c.obj	451e9d55fa88f62f
+9	793	6727086864389714	CMakeFiles/Select_Insert.dir/selecaoInsercao.c.obj	451e9d55fa88f62f
+794	1410	6727086870542439	Select_Insert.exe	203012e058f463b4
