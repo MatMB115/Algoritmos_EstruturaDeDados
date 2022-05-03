@@ -106,7 +106,7 @@ void merge(int *vet, int inicio, int meio, int fim){
         vetAux[i] = vet[k];
         i++;
     }
-
+    //Copiar para o vetor original
     for(k = inicio; k <= fim; k++){
         vet[k] = vetAux[k - inicio];
     }
@@ -134,7 +134,7 @@ int particiona(int *vet, int inicio, int fim){
     for(i = inicio + 1; i <= fim; i++){
         if(vet[i] < pivo){
             pos++;
-            if(i != pos){
+            if(i != pos){ 
                 aux = vet[i];
                 vet[i] = vet[pos];
                 vet[pos] = aux;
