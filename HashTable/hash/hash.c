@@ -4,6 +4,11 @@
 #include "hash.h"
 #include "lista.h"
 
+struct hash{
+    lista **tabela;
+    int tam;
+};
+
 
 hash *criaHash(int tam);
 //Aloca e inicializa uma tabela hash de tamanho "tam";

@@ -3,20 +3,22 @@
 #include <string.h>
 
 #include "lista.h"
+#include "hash.h"
 
 struct no{
     char palavra[30];
-    no *prox;
+    struct no *prox;
 };
 
 struct lista{
-    no *inicio;
+    struct no *inicio;
     int tam;
 };
 
 
 lista *criaLista(){
     lista *l = (lista*) malloc(sizeof(lista));
+
     if(l == NULL){
         printf("\nErro ao alocar lista!");
         exit(1);
@@ -30,22 +32,23 @@ lista *criaLista(){
 //Aloca e inicializa uma lista
 
 int insereLista(lista *l, char *palavra){
-    no *el = (no*) malloc(sizeof(no));
-    if(el == NULL){
+    no *noIns = (no*) malloc(sizeof(no));
+
+    if(noIns == NULL){
         printf("\nErro ao alocar no");
         return 1;
     }
     else{
         if(l->inicio == NULL){//Lista vazia
-            el->prox = NULL;
-            strcpy(el->palavra, palavra);
-            l->inicio = el;
+            noIns->prox = NULL;
+            strcpy(noIns->palavra, palavra);
+            l->inicio = noIns;
             return 0;
         }
         else{
-            el->prox = l->inicio;
-            l->inicio = el;
-            strcpy(el->palavra, palavra);
+            noIns->prox = l->inicio;
+            l->inicio = noIns;
+            strcpy(noIns->palavra, palavra);
             return 0;
         }
     }
@@ -55,11 +58,7 @@ int insereLista(lista *l, char *palavra){
 //Retorna 1 caso ocorra erro na inserção e 0 caso contrário.
 
 lista *getLista(lista **vet, int pos){
-    int i;
 
-    /*for(i = 0; i < ; i++){
-
-    }*/
 
 }
 //Retorna a lista de uma determinada posição da tabela hash
@@ -69,41 +68,60 @@ int getTamLista(lista *l){
 }
 
 int buscaLista(lista *l, char *palavra){
-    int i;
-    no *aux;
 
-    aux = l->inicio;
-    for(i = 0; i < l->tam; i++){
-        if(strcmp(aux->palavra, palavra) == 0){
-            return 1;
-        }
-        aux = aux->prox;
+    if(l->inicio == NULL){
+        return 0;
     }
-    return 0;
+    else{
+        int i;
+        no *noAux;
+
+        noAux = l->inicio;
+        for(i = 0; i < l->tam; i++){
+            if(strcmp(noAux->palavra, palavra) == 0){
+                return 1;
+            }
+            noAux = noAux->prox;
+        }
+        return 0;
+    }
 }
 //Verifica se uma palavra está presente ou não em uma lista
 //Se a palavra estiver presente, retorna 1. Caso contrário, retorna 0;
 
 void removeLista(lista *l, char *palavra){
     int i;
-    no *aux, *ant;
+    no *noAux, *noAnt;
+    noAux = l->inicio;
 
-    aux = l->inicio;
-    for(i = 0; i < l->tam; i++){
-        if(strcmp(aux->palavra, palavra) == 0){
-            ant->prox = aux->prox;
-            free(aux);
-            return 1;
+    for(i = 0; i < l->tam; i++){ //Se achar a palavra, linka o elemento noAnterior com o próximo e libera o nó
+        if(strcmp(noAux->palavra, palavra) == 0){ 
+            noAnt->prox = noAux->prox;
+            free(noAux);
+            noAux = noAnt->prox;
         }
-        ant = aux;
-        aux = aux->prox;
+        else{
+            noAnt = noAux;
+            noAux = noAux->prox;
+        }
     }
-    return 0;
 }
 //Remove uma palavra da lista
 
 void imprimeLista(lista *l){
 
+    if(l->inicio == NULL){
+        printf("Lista Vazia\n");
+    }
+    else{
+        int i;
+        no *noAux;
+        noAux = l->inicio;
+        for(i = 0; i < l->tam; i++){
+            printf("%s\n", noAux->palavra);
+            noAux = noAux->prox;
+        }
+    }
 }
 //Imprime as palavras de uma lista => printf("%s\n", noAux->palavra);
 //Se a lista estiver vazia => printf("Lista Vazia\n");
