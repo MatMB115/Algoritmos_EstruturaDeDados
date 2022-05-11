@@ -4,6 +4,12 @@
 
 #include "lista.h"
 
+// COM112 - Algoritmos e Estruturas de Dados II
+// Atividade 04 – 10/05/22
+// 2019005687– Matheus Martins Batista
+// 2020003596 - Kaique de Souza Leal Silva
+// Tabela Hash
+
 struct no{
     char palavra[30];
     struct no *prox;
@@ -19,8 +25,8 @@ lista *criaLista(){
     lista *l = (lista*) malloc(sizeof(lista));
 
     if(l == NULL){
-        printf("\nErro ao alocar lista!");
-        exit(1);
+        printf("\nErro ao alocar memória para lista!");
+        return NULL;
     }
     else{
         l->inicio = NULL;
@@ -35,7 +41,7 @@ int insereLista(lista *l, char *palavra){
     no *noIns = (no*) malloc(sizeof(no));
 
     if(noIns == NULL){
-        printf("\nErro ao alocar no");
+        printf("\nErro ao alocar memória para um no");
         return 1;
     }
     else{
@@ -43,11 +49,13 @@ int insereLista(lista *l, char *palavra){
             noIns->prox = NULL;
             strcpy(noIns->palavra, palavra);
             l->inicio = noIns;
+            l->tam++;
             return 0;
         }
         else{
             noIns->prox = l->inicio;
             l->inicio = noIns;
+            l->tam++;
             strcpy(noIns->palavra, palavra);
             return 0;
         }
@@ -58,10 +66,7 @@ int insereLista(lista *l, char *palavra){
 //Retorna 1 caso ocorra erro na inserção e 0 caso contrário.
 
 lista *getLista(lista **vet, int pos){
-    int i;
-    lista *listAux;
-
-    return listAux;
+    return vet[pos];
 }
 //Retorna a lista de uma determinada posição da tabela hash
 
@@ -93,7 +98,7 @@ int buscaLista(lista *l, char *palavra){
 
 void removeLista(lista *l, char *palavra){
     int i;
-    no *noAux, *noAnt;
+    struct no *noAux, *noAnt;
     noAux = l->inicio;
 
     for(i = 0; i < l->tam; i++){ //Se achar a palavra, linka o elemento no Anterior com o próximo e libera o nó
@@ -117,7 +122,7 @@ void imprimeLista(lista *l){
     }
     else{
         int i;
-        no *noAux;
+        struct no *noAux;
         noAux = l->inicio;
         for(i = 0; i < l->tam; i++){
             printf("%s\n", noAux->palavra);
