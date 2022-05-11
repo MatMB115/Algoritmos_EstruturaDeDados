@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "lista.h"
-#include "hash.h"
 
 struct no{
     char palavra[30];
@@ -22,7 +21,8 @@ lista *criaLista(){
     if(l == NULL){
         printf("\nErro ao alocar lista!");
         exit(1);
-    }else{
+    }
+    else{
         l->inicio = NULL;
         l->tam = 0;
     return l;
@@ -58,8 +58,10 @@ int insereLista(lista *l, char *palavra){
 //Retorna 1 caso ocorra erro na inserção e 0 caso contrário.
 
 lista *getLista(lista **vet, int pos){
+    int i;
+    lista *listAux;
 
-
+    return listAux;
 }
 //Retorna a lista de uma determinada posição da tabela hash
 
@@ -94,11 +96,11 @@ void removeLista(lista *l, char *palavra){
     no *noAux, *noAnt;
     noAux = l->inicio;
 
-    for(i = 0; i < l->tam; i++){ //Se achar a palavra, linka o elemento noAnterior com o próximo e libera o nó
+    for(i = 0; i < l->tam; i++){ //Se achar a palavra, linka o elemento no Anterior com o próximo e libera o nó
         if(strcmp(noAux->palavra, palavra) == 0){ 
             noAnt->prox = noAux->prox;
             free(noAux);
-            noAux = noAnt->prox;
+            return;
         }
         else{
             noAnt = noAux;
