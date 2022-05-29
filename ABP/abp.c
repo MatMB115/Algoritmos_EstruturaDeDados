@@ -167,7 +167,7 @@ int removeNo(avl *arv, int chave){
                     if(noRemove->chave < noRemove->pai->chave){//O nó a ser eliminado está à esquerda do pai
                         if(noRemove->esq != NULL){//Há um filho na esquerda
                             noRemove->pai->esq = noRemove->esq; // linka ex-pai do noRemove ao ex-filho do predecessor
-                            noRemove->esq->pai = noRemove->pai; // linka ex-filho do predecessor ao ex-pai do predecessor
+                            noRemove->esq->pai = noRemove->pai; // linka ex-filho do noRemove ao ex-pai do predecessor
                         }
                         else{//Há um filho na direita
                             noRemove->pai->esq = noRemove->dir;
