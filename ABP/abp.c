@@ -5,7 +5,7 @@
 
 // COM112 - Algoritmos e Estruturas de Dados II
 // Atividade 05 – 24/05/22
-// 2019005687– Matheus Martins Batista
+// 2019005687 - Matheus Martins Batista
 // 2020003596 - Kaique de Souza Leal Silva
 // Árvore Binária de Busca com Sentinela
 
@@ -124,34 +124,31 @@ int insereNo(abp *arv, int chave){
 //Retorna 0 caso a deleção aconteça;
 //Retorna -1 caso a árvore esteja vazia
 //Retorna -2 caso o elemento não esteja presente na árvore
-int removeNo(abp *arv, int chave){
-    no *noAux = recuperaNo(arv, chave);
+int removeNo(avl *arv, int chave){
+    no *noRemove = recuperaNo(arv, chave);
     no *predecessor, *noAtual;
-    if(noAux == NULL){
+    if(noRemove == NULL){
         return -2;
     }
     else{
-        if(arv->numElementos == 0){
+        if(arv->numElementos == 0){//Árvore vazia
             return -1;
         }
         else{
-            if(noAux->dir == NULL && noAux->esq == NULL){//Eliminar um nó folha
-                if(noAux->chave < noAux->pai->chave){//da esquerda
-                    noAux->pai->esq = NULL;
-                    free(noAux);
-                    arv->numElementos--;
-                    return 0;
+            if(noRemove->dir == NULL && noRemove->esq == NULL){//Eliminar um nó folha
+                if(noRemove->chave < noRemove->pai->chave){//da esquerda
+                    noRemove->pai->esq = NULL;
                 }
                 else{//da direita
-                    noAux->pai->dir = NULL;
-                    arv->numElementos--;
-                    free(noAux);
-                    return 0;
+                    noRemove->pai->dir = NULL;
                 }
+                free(noRemove);
+                arv->numElementos--;
+                return 0;
             }
             else{
-                if(noAux->dir !=NULL && noAux->esq != NULL){//Eliminar um nó com 2 filhos
-                    noAtual = noAux->esq;
+                if(noRemove->dir !=NULL && noRemove->esq != NULL){//Eliminar um nó com 2 filhos
+                    noAtual = noRemove->esq;
                     while(noAtual != NULL){
                         predecessor = noAtual;
                         noAtual = noAtual->dir;
@@ -159,48 +156,38 @@ int removeNo(abp *arv, int chave){
                     if(predecessor->esq != NULL){ //se predecessor tem filho
                         predecessor->esq->pai = predecessor->pai; // linka ex-filho do predecessor ao ex-pai do predecessor
                         predecessor->pai->dir = predecessor->esq; // linka ex-pai do predecessor ao ex-filho do predecessor
-                        noAux->chave = predecessor->chave;
-                        arv->numElementos--;
-                        free(predecessor);
-                        return 0;
                     }
-                    else{//predecessor não tem filho
-                        noAux->chave = predecessor->chave;
-                        arv->numElementos--;
-                        free(predecessor);
-                        return 0;
-                    }
-                    
+                    //Copiar chave e desalocar o nó
+                    noRemove->chave = predecessor->chave;
+                    arv->numElementos--;
+                    free(predecessor);
+                    return 0;
                 }
                 else{//Eliminar um nó com 1 filho
-                    if(noAux->chave < noAux->pai->chave){//O nó a ser eliminado está à esquerda do pai
-                        if(noAux->esq != NULL){//Há um filho na esquerda
-                            noAux->pai->esq = noAux->esq;
-                            arv->numElementos--;
-                            free(noAux);
-                            return 0;
+                    if(noRemove->chave < noRemove->pai->chave){//O nó a ser eliminado está à esquerda do pai
+                        if(noRemove->esq != NULL){//Há um filho na esquerda
+                            noRemove->pai->esq = noRemove->esq; // linka ex-pai do noRemove ao ex-filho do predecessor
+                            noRemove->esq->pai = noRemove->pai; // linka ex-filho do predecessor ao ex-pai do predecessor
                         }
                         else{//Há um filho na direita
-                            noAux->pai->esq = noAux->dir;
-                            arv->numElementos--;
-                            free(noAux);
-                            return 0;
+                            noRemove->pai->esq = noRemove->dir;
+                            noRemove->dir->pai = noRemove->pai;
                         }
                     }
                     else{//O nó a ser eliminado está à direita do pai
-                        if(noAux->esq != NULL){//Há um filho na esquerda
-                            noAux->pai->dir = noAux->esq;
-                            arv->numElementos--;
-                            free(noAux);
-                            return 0;
+                        if(noRemove->esq != NULL){//Há um filho na esquerda
+                            noRemove->pai->dir = noRemove->esq;
+                            noRemove->esq->pai = noRemove->pai;
                         }
                         else{//Há um filho na direita
-                            noAux->pai->dir = noAux->dir;
-                            arv->numElementos--;
-                            free(noAux);
-                            return 0;
+                            noRemove->pai->dir = noRemove->dir;
+                            noRemove->dir->pai = noRemove->pai;
                         }
                     }
+                    //Desalocar o nó
+                    arv->numElementos--;
+                    free(noRemove);
+                    return 0;
                 }
             }
         }
@@ -269,7 +256,7 @@ void imprimeNo(no *atual){
         }
     }
     if(atual->pai->chave == -1000){
-        printf("Pai : Sentinela\n");
+        printf("Sentinela\n");
     }
     else{
         printf("Pai : %d\n", atual->pai->chave);
