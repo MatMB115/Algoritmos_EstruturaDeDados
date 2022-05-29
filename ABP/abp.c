@@ -124,7 +124,7 @@ int insereNo(abp *arv, int chave){
 //Retorna 0 caso a deleção aconteça;
 //Retorna -1 caso a árvore esteja vazia
 //Retorna -2 caso o elemento não esteja presente na árvore
-int removeNo(avl *arv, int chave){
+int removeNo(abp *arv, int chave){
     no *noRemove = recuperaNo(arv, chave);
     no *predecessor, *noAtual;
     if(noRemove == NULL){

@@ -45,7 +45,7 @@ no *getRaiz(avl *arv);
 //Atualiza o fator de balanceamento dos nós
 void atualizaFB_insercao(avl *arv, no *novoNo);
 
-
+//Balancea a árvore após a inserção de um nó
 void balanceamento_Insercao(avl *arv, no *noDesbalanceado);
 
 //Rotaciona os nós à esquerda
