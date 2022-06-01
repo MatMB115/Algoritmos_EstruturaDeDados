@@ -32,6 +32,7 @@ avl *criaArvore(){
             sent->esq = NULL;
             sent->dir = NULL;
             sent->pai = NULL;
+            sent->fb = 0;
             arv->sentinela = sent;
             arv->numElementos = 0;
             return arv;
@@ -80,15 +81,17 @@ int insereNo(avl *arv, int chave){
         noAux->chave = chave;
         noAux->dir = NULL;
         noAux->esq = NULL;
+        noAux->fb = 0;
         if(arv->numElementos == 0){
             noAux->pai = arv->sentinela;
             arv->sentinela->dir = noAux;
             arv->numElementos++;
+            atualizaFB_insercao(arv, noAux);
             return 0;
         }
         else{
             noAtual = arv->sentinela->dir;
-            while(noAtual != NULL){
+            while(noAtual != NULL){//Percorre até encontrar um pai com campo filho nulo
                 if(chave < noAtual->chave){
                     noAnt = noAtual;
                     noAtual = noAtual->esq;
@@ -98,16 +101,18 @@ int insereNo(avl *arv, int chave){
                     noAtual = noAtual->dir;
                 }
             }
-            if(chave < noAnt->chave){
+            if(chave < noAnt->chave){//insere filho à esquerda
                 noAux->pai = noAnt;
                 noAnt->esq = noAux;
                 arv->numElementos++;
+                atualizaFB_insercao(arv, noAux);
                 return 0;
             }
-            else{
+            else{//insere filho à direita
                 noAux->pai = noAnt;
                 noAnt->dir = noAux;
                 arv->numElementos++;
+                atualizaFB_insercao(arv, noAux);
                 return 0;
             }
         }
@@ -267,24 +272,27 @@ no *getRaiz(avl *arv){
     return arv->sentinela->dir;
 }
 
-//Atualiza o fator de balanceamento dos nós
+//Atualiza o valor do fator de balanceamento dos nós após a inserção de um nó 
+//Condições de parada : após ajuste do FB => chegar no nó raiz ou o nó ficar com fb 0, 2 OU -2
 void atualizaFB_insercao(avl *arv, no *novoNo){
+    no *noAux = novoNo;
     do{
-        if(novoNo->pai->chave < novoNo->chave){
-            novoNo->pai->fb++;
+        if(noAux->pai->chave < noAux->chave){
+            noAux->pai->fb++;
         }
         else{
-            novoNo->pai->fb--;
+            noAux->pai->fb--;
         }
-        novoNo = novoNo->pai;
-    }while((novoNo->fb != 0) || (novoNo->fb != 2) || (novoNo->fb != -2) || (novoNo != arv->sentinela));
-    if((novoNo->fb != 2) || (novoNo->fb != -2)){
-        balanceamento_Insercao(arv, novoNo);
+        noAux = noAux->pai;
+    }while((noAux->fb != 0) || (noAux->fb != 2) || (noAux->fb != -2) || (noAux != arv->sentinela));
+    if((noAux->fb != 2) || (noAux->fb != -2)){
+        balanceamento_Insercao(arv, noAux);
     }
 }
 
+//Verifica a estratégia de balanceamento do nó e ajusta o fator de balanceamento
 void balanceamento_Insercao(avl *arv, no *noDesbalanceado){
-    struct no *filho, *neto = NULL;
+    no *filho, *neto = NULL;
     int fbAux;
     if (noDesbalanceado->fb == 2){ //inicio fator = 2
         filho = noDesbalanceado->dir;
@@ -295,14 +303,21 @@ void balanceamento_Insercao(avl *arv, no *noDesbalanceado){
             fbAux = neto->fb;
             rotacaoDir(arv, filho);
             rotacaoEsq(arv, noDesbalanceado);
-            filho->fb = -1;
-        }else{
+            if(fbAux == -1){
+                filho->fb = 1;
+            }
+            else{
+                if(fbAux == 1){
+                    noDesbalanceado->fb = -1;
+                }
+            }
+        }
+        else{
             rotacaoEsq(arv, noDesbalanceado);
         }
-        
     } // fim fator = 2
     if (noDesbalanceado->fb == -2){ //inicio fator = -2
-        filho = noDesbalanceado->dir;
+        filho = noDesbalanceado->esq;
         if(filho->fb == 1){ //confere o fb do filho = 1
             if(filho->esq){
                 neto = filho->esq;
@@ -310,21 +325,65 @@ void balanceamento_Insercao(avl *arv, no *noDesbalanceado){
             fbAux = neto->fb;
             rotacaoEsq(arv, filho);
             rotacaoDir(arv, noDesbalanceado);
-            noDesbalanceado->fb = 1;
-        }else{
+            if(fbAux == 1){
+                filho->fb = -1;
+            }
+            else{
+                if(fbAux == -1){
+                    noDesbalanceado->fb = 1;
+                }
+            }
+        }
+        else{
             rotacaoDir(arv, noDesbalanceado);
         }
-        
     } // fim fator = -2
-    
 }
 
-//Rotaciona os nós à esquerda
+//Rotação à esquerda no nó desbalanceado
 void rotacaoEsq(avl *arv, no *noDesbalanceado){
+    no *noAux = noDesbalanceado->dir;
     
+    noDesbalanceado->dir = noAux->esq;
+    if(noAux->esq != arv->sentinela){
+        noAux->esq->pai = noDesbalanceado;
+    }
+    noAux->pai = noDesbalanceado->pai;
+    if(noDesbalanceado->pai == arv->sentinela){
+        arv->sentinela->dir = noAux;
+    }
+    else{
+        if(noDesbalanceado == noDesbalanceado->pai->esq){
+            noDesbalanceado->pai->esq = noAux;
+        }
+        else{
+            noDesbalanceado->pai->dir = noAux;
+        }
+    }
+    noAux->esq = noDesbalanceado;
+    noDesbalanceado->pai = noAux;
 }
 
-//Rotaciona os nós à direita
+//Rotação à direita no no desbalanceado
 void rotacaoDir(avl *arv, no *noDesbalanceado){
+        no *noAux = noDesbalanceado->esq;
     
+    noDesbalanceado->esq = noAux->dir;
+    if(noAux->dir != arv->sentinela){
+        noAux->dir->pai = noDesbalanceado;
+    }
+    noAux->pai = noDesbalanceado->pai;
+    if(noDesbalanceado->pai == arv->sentinela){
+        arv->sentinela->dir = noAux;
+    }
+    else{
+        if(noDesbalanceado == noDesbalanceado->pai->dir){
+            noDesbalanceado->pai->dir = noAux;
+        }
+        else{
+            noDesbalanceado->pai->esq = noAux;
+        }
+    }
+    noAux->dir = noDesbalanceado;
+    noDesbalanceado->pai = noAux;
 }
