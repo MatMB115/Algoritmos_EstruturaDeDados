@@ -1,57 +1,31 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "avl.h"
 
 int main() {
-    int res, chave;
-    char nomeArquivo[100];
+    int chave;
+    char nomeArquivo[100]; // = "entrada.txt";
     avl *novaArvore = criaArvore();
 
     scanf("%s", nomeArquivo);
 
     carregaArvore(novaArvore, nomeArquivo);
     percorre(getRaiz(novaArvore));
+    printf("\nAltura da arvore: %d.\n", getAltura(getRaiz(novaArvore)));
 
     scanf("%d", &chave);
-
-    res = removeNo(novaArvore, chave);
-    if(res == 0)
-        printf("\n Elemento %d removido com sucesso \n", chave);
-    else
-    {
-        if (res == -1)
-            printf("\nÁrvore Vazia");
-        else
-            printf("\nElemento %d não encontrado na arvore \n", chave);
-    }
-
-    res = removeNo(novaArvore, chave);
-    if(res == 0)
-        printf("\n Elemento %d removido com sucesso \n", chave);
-    else
-    {
-        if (res == -1)
-            printf("\nÁrvore Vazia");
-        else
-            printf("\nElemento %d não encontrado na arvore \n", chave);
-    }
+    removeNo(novaArvore, chave);
 
     scanf("%d", &chave);
-
-    no *aux = recuperaNo(novaArvore, chave);
-    if(aux == NULL)
-        printf("\nElemento %d não encontrado na arvore \n", chave);
-    else
-        imprimeNo(aux);
+    removeNo(novaArvore, chave);
 
     scanf("%d", &chave);
+    removeNo(novaArvore, chave);
 
-    aux = recuperaNo(novaArvore, chave);
-    if(aux == NULL)
-        printf("\nElemento %d não encontrado na arvore \n", chave);
-    else
-        imprimeNo(aux);
+    printf("\n");
 
-    printf("\nA arvore possui %d elementos\n", getNumElementos(novaArvore));
+    percorre(getRaiz(novaArvore));
+    printf("\nAltura da arvore: %d.\n", getAltura(getRaiz(novaArvore)));
 
-    return 0;
+    free(novaArvore);
 }

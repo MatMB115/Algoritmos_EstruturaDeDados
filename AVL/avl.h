@@ -1,6 +1,7 @@
 #ifndef LISTA_7_AVL_H
 #define LISTA_7_AVL_H
 
+
 typedef struct arvore avl;
 
 typedef struct no no;
@@ -24,7 +25,7 @@ int insereNo(avl *arv, int chave);
 int removeNo(avl *arv, int chave);
 
 //Percorrimento em pré-ordem
-//printf("%d\t", raiz->chave)
+//printf("%d: %d\t", raiz->chave, raiz->fb);
 void percorre(no *raiz);
 
 //Retorna o nó que contém a chave indicada (não trata valores repetidos)
@@ -42,16 +43,30 @@ int getNumElementos(avl *arv);
 //Retorna a raiz da árvore (filho direita da sentinela)
 no *getRaiz(avl *arv);
 
-//Atualiza o fator de balanceamento dos nós
-void atualizaFB_insercao(avl *arv, no *novoNo);
+//Função recursiva que retorna a altura da árvore
+//A altura é maior distância entre a raiz e uma folha
+int getAltura(no *raiz);
 
-//Balancea a árvore após a inserção de um nó
-void balanceamento_Insercao(avl *arv, no *noDesbalanceado);
+//******************FUNÇÕES DE BALANCEAMENTO ***************************//
+//atualiza o valor do fator de balanceamento dos nós após a inserção de um nó
+//condições de parada : após ajuste do FB => chegar no nó raiz ou o nó ficar com fb 0, 2 ou -2
+void atualizaFB_Insercao(avl *arv, no *novoNo);
 
-//Rotaciona os nós à esquerda
+//atualiza o valor do fator de balanceamento dos nós após a remoção de um nó
+//condições de parada : após ajuste do FB => chegar na sentinela ou o nó ficar com fb 1, -1, 2 ou -2
+void atualizaFB_Remocao(avl *arv, no *pai, int chave);
+
+//verifica a estratégia de balanceamento do nó e ajusta o fator de balanceamento
+void balanceamento(avl *arv, no *noDesbalanceado);
+
+//rotação à esquerda no nó desbalanceado
 void rotacaoEsq(avl *arv, no *noDesbalanceado);
 
-//Rotaciona os nós à direita
+//rotação à direita no nó desbalanceado
 void rotacaoDir(avl *arv, no *noDesbalanceado);
+
+
+
+
 
 #endif //LISTA_7_AVL_H
