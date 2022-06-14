@@ -23,7 +23,7 @@ struct arvore{
 };
 
 //Cria uma nova árvore inicializando a sentinela
-avl *criaArvore(){ //OK
+avl *criaArvore(){
     avl *arv = (avl*) malloc(sizeof(avl));
     if(arv == NULL){
         return NULL;
@@ -49,7 +49,7 @@ avl *criaArvore(){ //OK
 //Popula uma árvore binária de pesquisa a partir de números contidos no arquivo
 //Retorna -1 caso haja erros durante a inserção e/ou leitura do arquivo
 //Retorna 0 caso contrário
-int carregaArvore(avl *arv, char *nomeArquivo){ //OK
+int carregaArvore(avl *arv, char *nomeArquivo){
     int chave;
     FILE *arq = fopen(nomeArquivo, "r");
     if(arq == NULL){
@@ -75,12 +75,12 @@ int carregaArvore(avl *arv, char *nomeArquivo){ //OK
 
 //Aloca um novo nó e o insere na árvore
 //Retorna 0 caso a inserção aconteça e -1 caso contrário
-int insereNo(avl *arv, int chave){ //OK
+int insereNo(avl *arv, int chave){
     no *noNovo = (no*) malloc(sizeof(no));
     no *pai, *noAux;
-
+    
     if(noNovo == NULL){
-        printf("Erro ao alocar memória para o nó");
+        printf("Erro ao alocar nó");
         return -1;
     }
     else{
@@ -115,8 +115,8 @@ int insereNo(avl *arv, int chave){ //OK
                 pai->dir = noNovo;
             }
             noNovo->pai = pai;
-            arv->numElementos++;
             atualizaFB_Insercao(arv, noNovo);
+            arv->numElementos++;
             return 0;
         }
     }
@@ -126,80 +126,84 @@ int insereNo(avl *arv, int chave){ //OK
 //Retorna 0 caso a deleção aconteça;
 //Retorna -1 caso a árvore esteja vazia
 //Retorna -2 caso o elemento não esteja presente na árvore
-int removeNo(avl *arv, int chave){ //OK
+int removeNo(avl *arv, int chave){
     no *noRemove = recuperaNo(arv, chave);
-    no *predecessor = NULL;
-
+    no *predecessor, *noAtual;
     if(noRemove == NULL){
         return -2;
     }
     else{
-        if(arv->numElementos == 0){
-            printf("Árvore vazia\n");
+        if(arv->numElementos == 0){//Árvore vazia
             return -1;
         }
-
-        if(noRemove->esq != NULL && noRemove->dir != NULL){//Dois filhos
-            predecessor = noRemove->esq;
-            while(predecessor->dir != NULL){
-                predecessor = predecessor->dir;
-            }
-            noRemove->chave = predecessor->chave;
-            noRemove = predecessor;
-        }
-
-        if(noRemove->esq == NULL && noRemove->dir == NULL){//nó folha
-            if(noRemove->chave < noRemove->pai->chave){
-                noRemove->pai->esq = NULL;
+        else{
+            if(noRemove->dir == NULL && noRemove->esq == NULL){//Eliminar um nó folha
+                if(noRemove->chave < noRemove->pai->chave){//da esquerda
+                    noRemove->pai->esq = NULL;
+                }
+                else{//da direita
+                    noRemove->pai->dir = NULL;
+                }
+                arv->numElementos--;
+                free(noRemove);
+                atualizaFB_Remocao(arv, noRemove->pai, chave);
+                return 0;
             }
             else{
-                noRemove->pai->dir = NULL;
-            }
-
-            if (noRemove->pai != arv->sentinela) {
-                atualizaFB_Remocao(arv, noRemove->pai, noRemove->chave);
-            }
-
-            free(noRemove);
-            arv->numElementos--;
-            return 0;
-        }
-
-        if(noRemove->esq == NULL || noRemove->dir == NULL){//Um filho
-            if(noRemove->dir != NULL){//à direita
-                if(noRemove->chave < noRemove->pai->chave){ //Ficará à esquerda do pai
-                    noRemove->pai->esq = noRemove->dir;
+                if(noRemove->dir != NULL && noRemove->esq != NULL){//Eliminar um nó com 2 filhos
+                    noAtual = noRemove->esq;
+                    while(noAtual != NULL){
+                        predecessor = noAtual;
+                        noAtual = noAtual->dir;
+                    }
+                    if(predecessor->esq != NULL){ //se predecessor tem filho
+                        predecessor->esq->pai = predecessor->pai; // linka ex-filho do predecessor ao ex-pai do predecessor
+                        predecessor->pai->dir = predecessor->esq; // linka ex-pai do predecessor ao ex-filho do predecessor
+                    }
+                    //Copiar chave e desalocar o nó
+                    noRemove->chave = predecessor->chave;
+                    arv->numElementos--;
+                    free(predecessor);
+                    atualizaFB_Remocao(arv, noRemove->pai, chave);
+                    return 0;
                 }
-                else{ //Ficará à direita do pai
-                    noRemove->pai->dir = noRemove->dir; 
+                else{//Eliminar um nó com 1 filho
+                    if(noRemove->chave < noRemove->pai->chave){//O nó a ser eliminado está à esquerda do pai
+                        if(noRemove->esq != NULL){//Há um filho na esquerda
+                            noRemove->pai->esq = noRemove->esq; // linka ex-pai do noRemove ao ex-filho do predecessor
+                            noRemove->esq->pai = noRemove->pai; // linka ex-filho do noRemove ao ex-pai do predecessor
+                        }
+                        else{//Há um filho na direita
+                            noRemove->pai->esq = noRemove->dir;
+                            noRemove->dir->pai = noRemove->pai;
+                        }
+                    }
+                    else{//O nó a ser eliminado está à direita do pai
+                        if(noRemove->esq != NULL){//Há um filho na esquerda
+                            noRemove->pai->dir = noRemove->esq;
+                            noRemove->esq->pai = noRemove->pai;
+                        }
+                        else{//Há um filho na direita
+                            noRemove->pai->dir = noRemove->dir;
+                            noRemove->dir->pai = noRemove->pai;
+                        }
+                    }
+                    //Desalocar o nó
+                    arv->numElementos--;
+                    free(noRemove);
+                    atualizaFB_Remocao(arv, noRemove->pai, chave);
+                    return 0;
                 }
-                noRemove->dir->pai = noRemove->pai; 
-            }
-            else{ //à esquerda
-                if(noRemove->chave < noRemove->pai->chave){
-                    noRemove->pai->esq = noRemove->esq;
-                }
-                else{
-                    noRemove->pai->dir = noRemove->esq;
-                }
-                noRemove->esq->pai = noRemove->pai; 
             }
         }
     }
-    if(noRemove->pai != arv->sentinela){
-        atualizaFB_Remocao(arv, noRemove->pai, noRemove->chave);
-    }
-    
-    free(noRemove);
-    arv->numElementos--;
-    return 0;
 }
 
-//Percorrimento em pré-ordem
-//printf("%d: %d\t", raiz->chave, raiz->fb);
-void percorre(no *raiz){ //OK
+//Percorrimeraiznto em pré-ordem
+//printf("%d\t", raiz->chave)
+void percorre(no *raiz){
     if(raiz != NULL){
-        printf("%d: %d\t", raiz->chave, raiz->fb);
+        printf("%d\t", raiz->chave);
         percorre(raiz->esq);
         percorre(raiz->dir);
     }
@@ -207,7 +211,7 @@ void percorre(no *raiz){ //OK
 
 //Retorna o nó que contém a chave indicada (não trata valores repetidos)
 //Retorna NULL caso o elemento não exista na árvore
-no *recuperaNo(avl *arv, int chave){ //OK
+no *recuperaNo(avl *arv, int chave){
     no *noAtual;
     noAtual = arv->sentinela->dir;
     if(noAtual == NULL){
@@ -234,7 +238,7 @@ no *recuperaNo(avl *arv, int chave){ //OK
 //Imprime a chave do nó, as chaves de seus filhos e do seu pai
 //Se o nó não tiver filho da esquerda e/ou da direita, imprime NULO
 //Se o pai for a sentinela, imprime Sentinela
-void imprimeNo(no *atual){ //OK
+void imprimeNo(no *atual){
     printf("Chave : %d\n", atual->chave);
     if(atual->dir == NULL && atual->esq == NULL){
         printf("Filho Esq : NULO\n");
@@ -265,18 +269,18 @@ void imprimeNo(no *atual){ //OK
 }
 
 //Retorna a quantidade de elementos contidos na árvore
-int getNumElementos(avl *arv){ //OK
+int getNumElementos(avl *arv){
     return arv->numElementos;
 }
 
 //Retorna a raiz da árvore (filho direita da sentinela)
-no *getRaiz(avl *arv){ //OK
+no *getRaiz(avl *arv){
     return arv->sentinela->dir;
 }
 
 //Função recursiva que retorna a altura da árvore
 //A altura é maior distância entre a raiz e uma folha
-int getAltura(no *raiz){ //OK
+int getAltura(no *raiz){
     if((raiz == NULL) || (raiz->esq == NULL && raiz->dir == NULL)){
         return 0;
     }  
@@ -290,100 +294,91 @@ int getAltura(no *raiz){ //OK
     }
 }
 
+
 //Atualiza o valor do fator de balanceamento dos nós após a inserção de um nó 
 //Condições de parada : após ajuste do FB => chegar no nó raiz ou o nó ficar com fb 0, 2 OU -2
-void atualizaFB_Insercao(avl *arv, no *novoNo){ //OK
+void atualizaFB_Insercao(avl *arv, no *novoNo){
     no *noAux = novoNo;
     
     do{
-        if(noAux->pai->chave <= noAux->chave){
+        if(noAux->pai->chave < noAux->chave){
             noAux->pai->fb++;
         }
         else{
             noAux->pai->fb--;
         }
         noAux = noAux->pai;
-    }while(noAux->pai != arv->sentinela && noAux->fb != 0 && (noAux->fb != 2 && noAux->fb != -2));
+    }while((noAux->fb != 0) && (noAux->fb != 2) && (noAux->fb != -2) && (noAux != arv->sentinela->dir));
     
     if((noAux->fb == 2) || (noAux->fb == -2)){
         balanceamento(arv, noAux);
     }
 }
 
-//Atualiza o valor do fator de balanceamento dos nós após a remoção de um nó
-//Condições de parada : após ajuste do FB => chegar na sentinela ou o nó ficar com fb 1, -1, 2 ou -2
-void atualizaFB_Remocao(avl *arv, no *pai, int chave){ //OK
+void atualizaFB_Remocao(avl *arv, no *pai, int chave){
     no *noAux = pai;
     
-    if(noAux->chave <= chave){
-        noAux->fb--;
-    }
-    else{
-        noAux->fb++;
-    }
-
-    while(noAux->fb == 0 && noAux != arv->sentinela){
-        noAux = noAux->pai;
-        if(chave <= noAux->chave){
-            noAux->fb--;
+    do{
+        if(noAux->pai->chave < noAux->chave){
+            noAux->pai->fb--;
         }
         else{
-            noAux->fb++;
+            noAux->pai->fb++;
         }
+        noAux = noAux->pai;
+    }while((noAux->fb == 0) && (noAux != arv->sentinela->dir));
+    
+    if(chave < noAux->chave){
+        noAux->fb++;
     }
-
+    
     if((noAux->fb == 2) || (noAux->fb == -2)){
         balanceamento(arv, noAux);
         noAux = noAux->pai;
         
-        if((noAux->fb == 0) && (noAux != arv->sentinela)){
+        if(noAux->fb == 0){
             atualizaFB_Remocao(arv, noAux->pai, chave);
         }
     }
 }
 
+//Segmentation fault
 //Verifica a estratégia de balanceamento do nó e ajusta o fator de balanceamento
-void balanceamento(avl *arv, no *noDesbalanceado){ //OK
-    no *filho = NULL, *neto;
+void balanceamento(avl *arv, no *noDesbalanceado){
+    no *filho, *neto;
+    int fbAux;
     
     if (noDesbalanceado->fb == 2){ //inicio fator = 2
         filho = noDesbalanceado->dir;
-        if(filho->fb == -1){ //rotação dupla, dir-esq
+        if(filho->fb == -1){ //rotação dupla, esq-dir
             neto = filho->esq;
-
             rotacaoDir(arv, filho);
             rotacaoEsq(arv, noDesbalanceado);
-
-            if (neto->fb == 0) {
-                noDesbalanceado->fb = 0;
-                filho->fb = 0;
-            }
-            else if (neto->fb == 1) {
-                noDesbalanceado->fb = -1;
-                filho->fb = 0;
-            }
-            else if (neto->fb == -1) {
+            if(neto->fb == -1) {
                 noDesbalanceado->fb = 0;
                 filho->fb = 1;
-            }
-            neto->fb = 0;
-        }
-        else{ //rotação simples a esquerda
-            if (filho->fb == 0) {
-            rotacaoEsq(arv, noDesbalanceado);
-            noDesbalanceado->fb = 1;
-            filho->fb = -1;
+                neto->fb = 0;
             }
             else {
-                rotacaoEsq(arv, noDesbalanceado);
-                if (filho->fb == 1) {
+                if(neto->fb == 1){
+                    noDesbalanceado->fb = -1; 
+                }
+                else{
                     noDesbalanceado->fb = 0;
-                    filho->fb = 0;
                 }
-                else {
-                    noDesbalanceado->fb = 1;
-                    filho->fb = -1;
-                }
+            filho->fb = 0;
+            neto->fb = 0;
+            }
+        }
+        else{ //rotação simples a esquerda
+            rotacaoEsq(arv, noDesbalanceado);
+            if(filho->fb == 0) {
+                noDesbalanceado->fb = 1;
+                filho->fb = -1;
+            }
+            else{
+                noDesbalanceado->fb = 0;
+                filho->fb = 0;
             }
         }
     } //fim fator = 2
@@ -391,90 +386,87 @@ void balanceamento(avl *arv, no *noDesbalanceado){ //OK
         filho = noDesbalanceado->esq;
         if(filho->fb == 1){ //Rotação dupla, esq-dir
             neto = filho->esq;
-
             rotacaoEsq(arv, filho);
             rotacaoDir(arv, noDesbalanceado);
-
-            if (neto->fb == 0) {
-                noDesbalanceado->fb = 0;
-                filho->fb = 0;
-            }
-            else if (neto->fb == 1) {
-                noDesbalanceado->fb = 0;
-                filho->fb = -1;
-            }
-            else {
+            if(neto->fb == -1) {
                 noDesbalanceado->fb = 1;
                 filho->fb = 0;
-            }
-            neto->fb = 0;
-        }
-        else{ //rotação simples a direita
-            if(filho->fb == 0){
-                rotacaoDir(arv, noDesbalanceado);
-                noDesbalanceado->fb = -1;
-                filho->fb = 1;
-            }
+                neto->fb = 0;
+                }
             else{
-                rotacaoDir(arv, noDesbalanceado);
-                if (filho->fb == -1) {
-                    noDesbalanceado->fb = 0;
-                    filho->fb = 0;
+                if(neto->fb == 1){
+                    filho->fb = -1;
                 }
                 else{
-                    noDesbalanceado->fb = -1;
-                    filho->fb = 1;
+                    filho->fb = 0;
                 }
+                noDesbalanceado->fb = 0;
+                neto->fb = 0;
+            }
+        }
+        else{ //rotação simples a direita
+            rotacaoDir(arv, noDesbalanceado);
+            if(filho->fb == 0) {
+                noDesbalanceado->fb = -1;
+                filho -> fb = 1;
+            }
+            else{
+                noDesbalanceado->fb = 0;
+                filho->fb = 0;
             }
         }
     }// fim fator = -2
 }
 
 //Rotação à esquerda no nó desbalanceado
-void rotacaoEsq(avl *arv, no *noDesbalanceado){ //OK
-    no* filhoDir = noDesbalanceado->dir;
-    noDesbalanceado->dir = filhoDir->esq;
-
-    if (filhoDir->esq != NULL) {
-        filhoDir->esq->pai = noDesbalanceado;
+void rotacaoEsq(avl *arv, no *noDesbalanceado){
+    
+    no *filhoDir;
+    no *esqFilho;
+    
+    filhoDir = noDesbalanceado -> dir;
+    esqFilho = filhoDir->esq;
+    
+    filhoDir->pai = noDesbalanceado->pai;
+    
+    if(filhoDir -> chave < noDesbalanceado -> pai -> chave){
+        noDesbalanceado->pai->esq = filhoDir; 
     }
-
-    filhoDir->esq = noDesbalanceado->pai;
-
-
-    if (noDesbalanceado == noDesbalanceado->pai->esq) {
-        noDesbalanceado->pai->esq = filhoDir;
-    }
-    else {
+    else{
         noDesbalanceado->pai->dir = filhoDir;
     }
-
-
-    filhoDir->pai = noDesbalanceado->pai;
-    filhoDir->esq = noDesbalanceado;
+    
+    filhoDir -> esq = noDesbalanceado;
     noDesbalanceado->pai = filhoDir;
+    noDesbalanceado->dir = esqFilho;
+    
+    if(esqFilho != NULL){
+        esqFilho->pai = noDesbalanceado;
+    }
 }
 
 //Rotação à direita no no desbalanceado
-void rotacaoDir(avl *arv, no *noDesbalanceado){ //OK
-    no* filhoEsq = noDesbalanceado->esq;
-    noDesbalanceado->esq = filhoEsq->dir;
-
-    if (filhoEsq->dir != NULL) {
-        filhoEsq->dir->pai = noDesbalanceado;
-    }
-
-    filhoEsq->dir = noDesbalanceado->pai;
-
-    if (noDesbalanceado == noDesbalanceado->pai->esq) {
+void rotacaoDir(avl *arv, no *noDesbalanceado){
+      
+    no *filhoEsq;
+    no *dirFilho;
+    
+    filhoEsq = noDesbalanceado -> esq;
+    dirFilho = filhoEsq->dir;
+    
+    filhoEsq->pai = noDesbalanceado->pai;
+    
+    if(filhoEsq -> chave < noDesbalanceado->pai->chave){
         noDesbalanceado->pai->esq = filhoEsq;
     }
-    else {
+    else{
         noDesbalanceado->pai->dir = filhoEsq;
     }
-
-
-    filhoEsq->pai = noDesbalanceado->pai;
-    filhoEsq->dir = noDesbalanceado;
+    filhoEsq -> dir = noDesbalanceado;
     noDesbalanceado->pai = filhoEsq;
+    noDesbalanceado->esq = dirFilho;
+    
+    if(dirFilho != NULL){
+        dirFilho->pai = noDesbalanceado;
+    }
 }
