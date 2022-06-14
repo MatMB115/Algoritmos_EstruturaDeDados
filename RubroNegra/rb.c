@@ -6,7 +6,6 @@
 // COM112 - Algoritmos e Estruturas de Dados II
 // Atividade 06
 // 2019005687– Matheus Martins Batista
-// 2020003596 - Kaique de Souza Leal Silva
 // rb
 
 struct no{
@@ -47,7 +46,7 @@ rb *criaArvore(){ //OK
             if(sentFolha == NULL){
                 return NULL;
             }
-            sentFolha->chave = -2399;
+            sentFolha->chave = -2000;
             sentFolha->esq = NULL;
             sentFolha->dir = NULL;
             sentFolha->pai = NULL;
@@ -104,8 +103,8 @@ int insereNo(rb *arv, int chave){
     novoNo->cor = 'v'; //todo nó inserido é vermelho
 
     //INSERIR O NOVO NÓ NO SEU LUGAR CORRETO
-    if(arv->numElementos == 0) //árvore está vazia
-    {
+    if(arv->numElementos == 0){ //árvore está vazia
+    
         arv->sentinelaRaiz->dir = novoNo;
         novoNo->pai = arv->sentinelaRaiz;
         novoNo->cor = 'p'; //a raiz é sempre preta
@@ -115,8 +114,7 @@ int insereNo(rb *arv, int chave){
 
     aux = arv->sentinelaRaiz->dir;
     pai = arv->sentinelaRaiz;
-    while(aux != arv->sentinelaFolha)
-    {
+    while(aux != arv->sentinelaFolha){
         pai = aux;
         if (chave < aux->chave)
             aux = aux->esq;
@@ -139,73 +137,75 @@ int insereNo(rb *arv, int chave){
 //Retorna -1 caso a árvore esteja vazia
 //Retorna -2 caso o elemento não esteja presente na árvore
 int removeNo(rb *arv, int chave){ //OK
-    no *noRemove = recuperaNo(arv, chave);
-    no *predecessor;
-    if(noRemove == NULL){
+    no *aux = recuperaNo(arv, chave);
+    no *sucessor;
+    no *x;
+
+    if(arv->numElementos == 0)
+        return -1;
+    
+    //ENCONTRAR O ELEMENTO NA ÁRVORE
+    if(aux == arv->sentinelaFolha){
+        printf("elemento não encontrado na árvore.\n");
         return -2;
     }
-    else{
-        if(arv->sentinelaRaiz->dir == NULL){
-            printf("Árvore vazia\n");
-            return -1;
-        }
 
-        if(noRemove->esq != NULL && noRemove->dir != NULL){//Dois filhos
-            predecessor = noRemove->esq;
-            while(predecessor->dir != NULL){
-                predecessor = predecessor->dir;
-            }
-            noRemove->chave = predecessor->chave;
-            noRemove = predecessor;
-        }
-
-        if(noRemove->esq == NULL && noRemove->dir == NULL){//Dois filhos
-            if(noRemove->chave < noRemove->pai->chave){
-                noRemove->pai->esq = NULL;
-            }
-            else{
-                noRemove->pai->dir = NULL;
-            }
-            atualizaFB_Remocao(arv, noRemove, chave);
-            free(noRemove);
-            return 0;
-        }
-
-        if(noRemove->esq == NULL || noRemove->dir == NULL){//Um filho
-            if(noRemove->dir != NULL){//à direita
-                if(noRemove->chave < noRemove->pai->chave){ //Ficará à esquerda do pai
-                    noRemove->pai->esq = noRemove->dir;
-                }
-                else{ //Ficará à direita do pai
-                    noRemove->pai->dir = noRemove->dir; 
-                }
-                noRemove->dir->pai = noRemove->pai; 
-            }
-            else{ //à esquerda
-                if(noRemove->chave < noRemove->pai->chave){
-                    noRemove->pai->esq = noRemove->esq;
-                }
-                else{
-                    noRemove->pai->dir = noRemove->esq;
-                }
-                noRemove->esq->pai = noRemove->pai; 
-            }
-        }
+    //REALIZAR A REMOÇÃO
+    if((aux->esq != arv->sentinelaFolha) && (aux->dir != arv->sentinelaFolha)){ //NÓ POSSUI DOIS FILHOS
+    
+        sucessor = aux->dir;
+        while (sucessor->esq != arv->sentinelaFolha) //FILHO MAIS À ESQUERDA DA SUBÁRVORE DA DIREITA
+            sucessor = sucessor->esq;
+        aux->chave = sucessor->chave; //CÓPIA
+        aux = sucessor;
     }
-    atualizaFB_Remocao(arv, noRemove, chave);
-    free(noRemove);
-    arv->numElementos--;
+    if((aux->esq == arv->sentinelaFolha) && (aux->dir == arv->sentinelaFolha)){ //NÓ É FOLHA
+    
+        if (aux->chave < aux->pai->chave)
+            aux->pai->esq = arv->sentinelaFolha;
+        else
+            aux->pai->dir = arv->sentinelaFolha;
+        if(aux->cor == 'p'){
+            arv->sentinelaFolha->pai = aux->pai;
+            balanceamentoRemocao(arv, arv->sentinelaFolha, aux->pai, chave);
+        }
+        arv->sentinelaFolha->pai = NULL;
+        free(aux);
+        return 0;
+    }
+    if((aux->esq != arv->sentinelaFolha) || (aux->dir != arv->sentinelaFolha)){ //NÓ POSSUI UM FILHO
+        if (aux->esq != arv->sentinelaFolha) { //AUX POSSUI FILHO À ESQUERDA
+            x = aux->esq;
+            if (aux->chave < aux->pai->chave) {
+                aux->pai->esq = aux->esq;
+            } else
+                aux->pai->dir = aux->esq;
+            aux->esq->pai = aux->pai;
+        }
+        if (aux->dir != arv->sentinelaFolha) {
+            x = aux->dir;
+            if (aux->chave < aux->pai->chave) {
+                aux->pai->esq = aux->dir;
+            } else
+                aux->pai->dir = aux->dir;
+            aux->dir->pai = aux->pai;
+        }
+        if (aux->cor == 'p')
+            balanceamentoRemocao(arv, x,  aux->pai, chave);
+    }
+    free(aux);
     return 0;
 }
 
 //Percorrimento em pré-ordem
-//printf("%d: %d\t", raiz->chave, raiz->fb);
+//printf("%d: %c\t", raiz->chave, raiz->cor);
 void percorre(no *raiz){ //OK
-    if(raiz->chave != 2399){
-        printf("%d: %c\t", raiz->chave, raiz->cor);
-        percorre(raiz->esq);
-        percorre(raiz->dir);
-    }
+    if(raiz->chave == -2000)
+        return;
+        
+    printf("%d: %c\t", raiz->chave, raiz->cor);
+    percorre(raiz->esq);
+    percorre(raiz->dir);
 }
 
 //Retorna o nó que contém a chave indicada (não trata valores repetidos)
@@ -412,4 +412,70 @@ void balanceamentoInsercao(rb *arv, no *novoNo){
 //Verifica se houve desbalanceamento na remoção
 //Se houve, faz o balanceamento
 //sucessor é o nó que ficou no lugar do nó removido
-void balanceamentoRemocao(rb *arv, no *sucessor, no *pai, int chave);
+void balanceamentoRemocao(rb *arv, no *noX, no *pai, int chave){
+    
+    no *irmao;
+    while((noX != arv->sentinelaRaiz->dir) && (noX->cor == 'p'))
+    {
+        no *pai = noX->pai;
+        if (pai->esq == noX) // o elemento é filho da esquerda
+        {
+            irmao = pai->dir;
+            //IMPLEMEMTAR AS REGRAS DA TABELA
+            if (irmao->cor == 'v') //CASO 1
+            {
+                irmao->cor = 'p';
+                pai->cor = 'v';
+                rotacaoEsq(arv, pai);
+                irmao = pai->dir;
+            }
+            if ((irmao->esq->cor == 'p') && (irmao->dir->cor == 'p')) //CASO 2
+            {
+                irmao->cor = 'v';
+                noX = pai;
+            } else {
+                if ((irmao->esq->cor == 'v') && (irmao->dir->cor == 'p'))  //CASO 3
+                {
+                    irmao->esq->cor = 'p';
+                    irmao->cor = 'v';
+                    rotacaoDir(arv, irmao);
+                    irmao = pai->dir;
+                }
+                irmao->cor = pai->cor; //CASO 4
+                pai->cor = 'p';
+                irmao->dir->cor = 'p';
+                rotacaoEsq(arv, pai);
+                noX = arv->sentinelaRaiz->dir;
+            }
+        }
+        else //o nó é um filho da direita
+        {
+            irmao = pai->esq;
+            if (irmao->cor == 'v') //CASO 1
+            {
+                irmao->cor = 'p';
+                pai->cor = 'v';
+                rotacaoDir(arv, pai);
+                irmao = pai->esq;
+            }
+            if ((irmao->esq->cor == 'p') && (irmao->dir->cor == 'p')) {
+                irmao->cor = 'v';
+                noX = pai;
+            } else {
+                if ((irmao->esq->cor == 'p') && (irmao->dir->cor == 'v')) {
+                    irmao->dir->cor = 'p';
+                    irmao->cor = 'v';
+                    rotacaoEsq(arv, irmao);
+                    irmao = pai->esq;
+                }
+                irmao->cor = pai->cor;
+                pai->cor = 'p';
+                irmao->esq->cor = 'p';
+                rotacaoDir(arv, pai);
+                noX = arv->sentinelaRaiz->dir;
+            }
+        }
+    }
+    noX->cor = 'p';
+    return;
+};
