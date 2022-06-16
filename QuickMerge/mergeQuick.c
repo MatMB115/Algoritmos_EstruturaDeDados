@@ -21,7 +21,7 @@ int geraAleatorios(char *nomeArquivo, int qtd){
         //Definir semente para randomizar os números
         srand(time(0));
         for (i = 0; i < qtd; ++i){
-            num = rand() % 1000; 
+            num = rand() % 30000; 
             if(fprintf(arq, "%d\n", num) == -1){//Erro ao tentar escrever no arquivo
                 fclose(arq);
                 return 1;
@@ -46,7 +46,7 @@ int* leArquivo(char *nomeArquivo, int qtd){
         }
         else{
             for(i = 0; i < qtd; i++){
-                if(fscanf(arq, "%d", &vet[i]) == EOF){ //Verificar se a leitura foi realizada corretamente
+                if(fscanf(arq, "%d", &vet[i]) == 0){ //Verificar se a leitura foi realizada corretamente
                     return NULL;
                 }
             }
