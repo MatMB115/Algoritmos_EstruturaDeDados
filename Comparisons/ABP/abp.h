@@ -43,6 +43,8 @@ int getNumElementos(abp *arv);
 //Retorna a raiz da árvore (filho direita da sentinela)
 no *getRaiz(abp *arv);
 
+int maior(int a, int b);
+
 int getAltura(no *raiz);
 
 int esvaziaArvore(abp *arv, char *nomeArquivo);

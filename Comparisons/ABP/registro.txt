@@ -1,0 +1,80 @@
+-------------
+N = 1000 - Aleatórios
+Altura: 20
+Tempo para carregar: 0.000669
+Tempo para liberar: 0.000432
+TM consulta: 0.001300
+-------------
+
+-------------
+N = 10000 - Aleatórios
+Altura: 29
+Tempo para carregar: 0.005647
+Tempo para liberar: 0.005347
+TM consulta: 0.001500
+-------------
+
+-------------
+N = 100000 - Aleatórios
+Altura: 41
+Tempo para carregar: 0.138347
+Tempo para liberar: 0.084266
+TM consulta: 0.003033
+-------------
+
+-------------
+N = 500000 - Aleatórios
+Altura: 87
+Tempo para carregar: 3.192463
+Tempo para liberar: 1.368409
+TM consulta: 0.002767
+-------------
+
+-------------
+N = 1000 - Crescente
+Altura: 1000
+Tempo para carregar: 0.004505
+Tempo para liberar: 0.000285
+TM consulta: 0.005867
+-------------
+
+-------------
+N = 10000 - Crescente
+Altura: 10000
+Tempo para carregar: 0.378482
+Tempo para liberar: 0.003186
+TM consulta: 0.044333
+-------------
+
+-------------
+N = 100000 - Crescente
+Altura: 100000
+Tempo para carregar: 41.713509
+Tempo para liberar: 0.020321
+TM consulta: 0.283800
+-------------
+
+-------------
+N = 1000 - Decrescente
+Altura: 982
+Tempo para carregar: 0.003854
+Tempo para liberar: 0.000492
+TM consulta: 0.004500
+-------------
+
+-------------
+N = 10000 - Decrescente
+Altura: 8522
+Tempo para carregar: 0.361260
+Tempo para liberar: 0.002389
+TM consulta: 0.031100
+-------------
+
+-------------
+N = 100000 - Decrescente
+Altura: 28943
+Tempo para carregar: 39.844842
+Tempo para liberar: 0.027207
+TM consulta: 0.282167
+-------------
+

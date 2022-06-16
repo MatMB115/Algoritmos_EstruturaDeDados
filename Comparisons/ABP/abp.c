@@ -264,18 +264,20 @@ no *getRaiz(abp *arv){
     return arv->sentinela->dir;
 }
 
+int maior(int a, int b){
+    if(a > b)
+        return a;
+    else
+        return b;
+}//maior
+
+
+
 int getAltura(no *raiz){
-    if((raiz == NULL) || (raiz->esq == NULL && raiz->dir == NULL)){
-        return 0;
-    }  
-    else{ //retorna a pilha do lado com maior profundidade
-        if(getAltura(raiz->esq) > getAltura(raiz->dir)){
-            return 1 + getAltura(raiz->esq);
-        }
-        else{
-            return 1 + getAltura(raiz->dir);
-        }
-    }
+   if((raiz == NULL) || (raiz->esq == NULL && raiz->dir == NULL))
+       return 0;
+   else
+       return 1 + maior(getAltura(raiz->esq), getAltura(raiz->dir));
 }
 
 void registraDados(double chargeT, double freeT, double searchT, char *nomeArquivo, int qtd, int altura, int type){
