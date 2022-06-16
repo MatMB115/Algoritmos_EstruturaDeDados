@@ -88,11 +88,11 @@ int main() {
     registraDados(ChargeT, FreeT, SearchTime, "registro.txt", qtd, altura, type);
 
     SearchTime = 0;
-    //N = 500000
+    //N = 1000000
     SearchTime = 0;
-    qtd = qtd*5;
+    qtd = qtd*10;
     inicio = clock();
-    carregaArvore(arvAleatoria, "data/500K.txt");
+    carregaArvore(arvAleatoria, "data/1M.txt");
     fim = clock();
     ChargeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
     altura = getAltura(getRaiz(arvAleatoria));
@@ -106,7 +106,7 @@ int main() {
     }
     SearchTime = SearchTime / 30;
     inicio = clock();
-    esvaziaArvore(arvAleatoria, "data/500K.txt");
+    esvaziaArvore(arvAleatoria, "data/1M.txt");
     fim = clock();
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
@@ -118,7 +118,7 @@ int main() {
     type = 2;
     qtd = 1000;
     inicio = clock();
-    carregaArvore(arvOrdenada, "data/1K_Cresc.txt");
+    carregaArvore(arvOrdenada, "data/1K_Ord.txt");
     fim = clock();
     ChargeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
     altura = getAltura(getRaiz(arvOrdenada));
@@ -132,7 +132,7 @@ int main() {
     }
     SearchTime = SearchTime / 30;
     inicio = clock();
-    esvaziaArvore(arvOrdenada, "data/1K_Cresc.txt");
+    esvaziaArvore(arvOrdenada, "data/1K_Ord.txt");
     fim = clock();
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
@@ -142,7 +142,7 @@ int main() {
     SearchTime = 0;
     qtd = qtd*10;
     inicio = clock();
-    carregaArvore(arvOrdenada, "data/10K_Cresc.txt");
+    carregaArvore(arvOrdenada, "data/10K_Ord.txt");
     fim = clock();
     ChargeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
     altura = getAltura(getRaiz(arvOrdenada));
@@ -156,7 +156,7 @@ int main() {
     }
     SearchTime = SearchTime / 30;
     inicio = clock();
-    esvaziaArvore(arvOrdenada, "data/10K_Cresc.txt");
+    esvaziaArvore(arvOrdenada, "data/10K_Ord.txt");
     fim = clock();
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
@@ -167,7 +167,7 @@ int main() {
     SearchTime = 0;
     qtd = qtd*10;
     inicio = clock();
-    carregaArvore(arvOrdenada, "data/100K_Cresc.txt");
+    carregaArvore(arvOrdenada, "data/100K_Ord.txt");
     fim = clock();
     ChargeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
     altura = getAltura(getRaiz(arvOrdenada));
@@ -181,18 +181,18 @@ int main() {
     }
     SearchTime = SearchTime / 30;
     inicio = clock();
-    esvaziaArvore(arvOrdenada, "data/100K_Cresc.txt");
+    esvaziaArvore(arvOrdenada, "data/100K_Ord.txt");
     fim = clock();
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
     registraDados(ChargeT, FreeT, SearchTime, "registro.txt", qtd, altura, type);
     /*
     SearchTime = 0;
-    //N = 500000
+    //N = 1000000
     SearchTime = 0;
-    qtd = qtd*5;
+    qtd = qtd*10;
     inicio = clock();
-    carregaArvore(arvOrdenada, "data/500K_Cresc.txt");
+    carregaArvore(arvOrdenada, "data/1M_Ord.txt");
     fim = clock();
     ChargeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
     altura = getAltura(getRaiz(arvOrdenada));
@@ -206,7 +206,7 @@ int main() {
     }
     SearchTime = SearchTime / 30;
     inicio = clock();
-    esvaziaArvore(arvOrdenada, "data/500K_Cresc.txt");
+    esvaziaArvore(arvOrdenada, "data/1M_Ord.txt");
     fim = clock();
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
@@ -218,7 +218,7 @@ int main() {
     type = 3;
     qtd = 1000;
     inicio = clock();
-    carregaArvore(arvDescrescente, "data/1K_Decresc.txt");
+    carregaArvore(arvDescrescente, "data/1K_Reverse.txt");
     fim = clock();
     ChargeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
     altura = getAltura(getRaiz(arvDescrescente));
@@ -232,7 +232,7 @@ int main() {
     }
     SearchTime = SearchTime / 30;
     inicio = clock();
-    esvaziaArvore(arvDescrescente, "data/1K_Decresc.txt");
+    esvaziaArvore(arvDescrescente, "data/1K_Reverse.txt");
     fim = clock();
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
@@ -242,7 +242,7 @@ int main() {
     SearchTime = 0;
     qtd = qtd*10;
     inicio = clock();
-    carregaArvore(arvDescrescente, "data/10K_Decresc.txt");
+    carregaArvore(arvDescrescente, "data/10K_Reverse.txt");
     fim = clock();
     ChargeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
     altura = getAltura(getRaiz(arvDescrescente));
@@ -256,7 +256,7 @@ int main() {
     }
     SearchTime = SearchTime / 30;
     inicio = clock();
-    esvaziaArvore(arvDescrescente, "data/10K_Decresc.txt");
+    esvaziaArvore(arvDescrescente, "data/10K_Reverse.txt");
     fim = clock();
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
@@ -267,7 +267,7 @@ int main() {
     SearchTime = 0;
     qtd = qtd*10;
     inicio = clock();
-    carregaArvore(arvDescrescente, "data/100K_Decresc.txt");
+    carregaArvore(arvDescrescente, "data/100K_Reverse.txt");
     fim = clock();
     ChargeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
     altura = getAltura(getRaiz(arvDescrescente));
@@ -281,18 +281,18 @@ int main() {
     }
     SearchTime = SearchTime / 30;
     inicio = clock();
-    esvaziaArvore(arvDescrescente, "data/100K_Decresc.txt");
+    esvaziaArvore(arvDescrescente, "data/100K_Reverse.txt");
     fim = clock();
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
     registraDados(ChargeT, FreeT, SearchTime, "registro.txt", qtd, altura, type);
     /*
     SearchTime = 0;
-    //N = 500000
+    //N = 1000000
     SearchTime = 0;
-    qtd = qtd*5;
+    qtd = qtd*10;
     inicio = clock();
-    carregaArvore(arvDescrescente, "data/500K_Decresc.txt");
+    carregaArvore(arvDescrescente, "data/1M_Reverse.txt");
     fim = clock();
     ChargeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
     altura = getAltura(getRaiz(arvDescrescente));
@@ -306,13 +306,15 @@ int main() {
     }
     SearchTime = SearchTime / 30;
     inicio = clock();
-    esvaziaArvore(arvDescrescente, "data/500K_Decresc.txt");
+    esvaziaArvore(arvDescrescente, "data/1M_Reverse.txt");
     fim = clock();
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
     registraDados(ChargeT, FreeT, SearchTime, "registro.txt", qtd, altura, type);
     */
     SearchTime = 0;
-    
+    free(arvAleatoria);
+    free(arvDescrescente);
+    free(arvOrdenada);
     return 0;
 }

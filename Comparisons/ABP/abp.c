@@ -271,8 +271,6 @@ int maior(int a, int b){
         return b;
 }//maior
 
-
-
 int getAltura(no *raiz){
    if((raiz == NULL) || (raiz->esq == NULL && raiz->dir == NULL))
        return 0;
