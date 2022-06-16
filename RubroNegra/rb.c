@@ -6,7 +6,7 @@
 // COM112 - Algoritmos e Estruturas de Dados II
 // Atividade 06
 // 2019005687– Matheus Martins Batista
-// rb
+// RubroNegra
 
 struct no{
     int chave;
