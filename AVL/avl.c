@@ -92,7 +92,6 @@ int insereNo(avl *arv, int chave){
         if(arv->numElementos == 0){
             noNovo->pai = arv->sentinela;
             arv->sentinela->dir = noNovo;
-            //atualizaFB_Insercao(arv, noNovo);
             arv->numElementos++;
             return 0;
         }
@@ -327,7 +326,7 @@ void atualizaFB_Remocao(avl *arv, no *pai, int chave){
 }
 
 //Verifica a estratégia de balanceamento do nó e ajusta o fator de balanceamento
-void balanceamento(avl* arv, no* noDesbalanceado) {
+void balanceamento(avl* arv, no* noDesbalanceado){
     no* filho = NULL, *neto;
 
     if(noDesbalanceado->fb == 2){ //inicio fator = 2
