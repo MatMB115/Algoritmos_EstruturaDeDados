@@ -13,7 +13,7 @@ int main() {
     percorre(getRaiz(novaArvore));
     printf("\n");
     printf("\nAltura da arvore: %d.\n", getAltura(getRaiz(novaArvore)));
-
+    
     scanf("%d", &chave);
     removeNo(novaArvore, chave);
     percorre(getRaiz(novaArvore));
