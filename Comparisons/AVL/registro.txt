@@ -1,0 +1,70 @@
+-------------
+N = 1000 - Aleatórios
+Altura: 12
+Tempo para carregar: 0.001110
+Tempo para liberar: 0.000000
+TM consulta: 0.002300
+Rotações para carregar: 727
+Rotações para liberar: 0
+-------------
+
+-------------
+N = 1000 - Crescente
+Altura: 9
+Tempo para carregar: 0.000814
+Tempo para liberar: 0.000000
+TM consulta: 0.001800
+Rotações para carregar: 991
+Rotações para liberar: 0
+-------------
+
+-------------
+N = 10000 - Crescente
+Altura: 15
+Tempo para carregar: 0.007049
+Tempo para liberar: 0.000000
+TM consulta: 0.002000
+Rotações para carregar: 13078
+Rotações para liberar: 0
+-------------
+
+-------------
+N = 100000 - Crescente
+Altura: 20
+Tempo para carregar: 0.062657
+Tempo para liberar: 0.000000
+TM consulta: 0.002567
+Rotações para carregar: 136314
+Rotações para liberar: 0
+-------------
+
+-------------
+N = 1000 - Decrescente
+Altura: 20
+Tempo para carregar: 0.000797
+Tempo para liberar: 0.000000
+TM consulta: 0.001633
+Rotações para carregar: 996
+Rotações para liberar: 0
+-------------
+
+-------------
+N = 10000 - Decrescente
+Altura: 28
+Tempo para carregar: 0.006203
+Tempo para liberar: 0.000000
+TM consulta: 0.001733
+Rotações para carregar: 12660
+Rotações para liberar: 0
+-------------
+
+-------------
+N = 100000 - Decrescente
+Altura: 58
+Tempo para carregar: 0.066805
+Tempo para liberar: 0.000000
+TM consulta: 0.002800
+Rotações para carregar: 132597
+Rotações para liberar: 0
+-------------
+
