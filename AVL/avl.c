@@ -6,7 +6,6 @@
 // COM112 - Algoritmos e Estruturas de Dados II
 // Atividade 06
 // 2019005687 - Matheus Martins Batista
-// 2020003596 - Kaique de Souza Leal Silva
 // AVL
 
 struct no{
