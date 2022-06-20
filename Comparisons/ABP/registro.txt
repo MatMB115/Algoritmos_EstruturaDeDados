@@ -1,64 +1,88 @@
 -------------
 N = 1000 - Aleatórios
 Altura: 22
-Tempo para carregar: 0.000598
-Tempo para liberar: 0.000633
-TM consulta: 0.001667
+Tempo para carregar: 0.000831
+Tempo para liberar: 0.000561
+TM consulta: 0.001800
 -------------
 
 -------------
 N = 10000 - Aleatórios
 Altura: 35
-Tempo para carregar: 0.008922
-Tempo para liberar: 0.008003
-TM consulta: 0.001967
+Tempo para carregar: 0.008040
+Tempo para liberar: 0.007867
+TM consulta: 0.002600
 -------------
 
 -------------
 N = 100000 - Aleatórios
 Altura: 39
-Tempo para carregar: 0.129865
-Tempo para liberar: 0.075805
-TM consulta: 0.002267
+Tempo para carregar: 0.127867
+Tempo para liberar: 0.071003
+TM consulta: 0.001933
 -------------
 
 -------------
 N = 500000 - Aleatórios
 Altura: 62
-Tempo para carregar: 0.881383
-Tempo para liberar: 0.492501
-TM consulta: 0.002600
+Tempo para carregar: 0.936110
+Tempo para liberar: 0.718904
+TM consulta: 0.003300
 -------------
 
 -------------
 N = 1000000 - Aleatórios
 Altura: 83
-Tempo para carregar: 2.966844
-Tempo para liberar: 1.026655
-TM consulta: 0.002233
+Tempo para carregar: 3.217931
+Tempo para liberar: 1.586266
+TM consulta: 0.003633
 -------------
 
 -------------
 N = 1000 - Crescente
 Altura: 1000
-Tempo para carregar: 0.003884
-Tempo para liberar: 0.000254
-TM consulta: 0.004600
+Tempo para carregar: 0.004170
+Tempo para liberar: 0.000523
+TM consulta: 0.005433
 -------------
 
 -------------
 N = 10000 - Crescente
 Altura: 10000
-Tempo para carregar: 0.357510
-Tempo para liberar: 0.002037
-TM consulta: 0.026467
+Tempo para carregar: 0.422395
+Tempo para liberar: 0.002111
+TM consulta: 0.029367
 -------------
 
 -------------
 N = 100000 - Crescente
 Altura: 100000
-Tempo para carregar: 45.884120
-Tempo para liberar: 0.028237
-TM consulta: 0.637400
+Tempo para carregar: 43.272538
+Tempo para liberar: 0.020665
+TM consulta: 0.523567
+-------------
+
+-------------
+N = 1000 - Decrescente
+Altura: 977
+Tempo para carregar: 0.003689
+Tempo para liberar: 0.000233
+TM consulta: 0.004167
+-------------
+
+-------------
+N = 10000 - Decrescente
+Altura: 8537
+Tempo para carregar: 0.363528
+Tempo para liberar: 0.002107
+TM consulta: 0.032033
+-------------
+
+-------------
+N = 100000 - Decrescente
+Altura: 28960
+Tempo para carregar: 35.709841
+Tempo para liberar: 0.023229
+TM consulta: 0.254100
 -------------
 

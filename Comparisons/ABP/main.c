@@ -207,7 +207,7 @@ int main() {
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
     registraDados(ChargeT, FreeT, SearchTime, "registro.txt", qtd, altura, type);
-
+    /*
     //N = 500000
     SearchTime = 0;
     qtd = qtd*5;
@@ -231,7 +231,7 @@ int main() {
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
     registraDados(ChargeT, FreeT, SearchTime, "registro.txt", qtd, altura, type);
-    /*
+    
     SearchTime = 0;
     //N = 1000000
     SearchTime = 0;
@@ -330,7 +330,7 @@ int main() {
     FreeT = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
     registraDados(ChargeT, FreeT, SearchTime, "registro.txt", qtd, altura, type);
-
+    /*
     //N = 500000
     SearchTime = 0;
     qtd = qtd*5;
@@ -355,7 +355,7 @@ int main() {
 
     registraDados(ChargeT, FreeT, SearchTime, "registro.txt", qtd, altura, type);
     
-    /*
+    
     SearchTime = 0;
     //N = 1000000
     SearchTime = 0;
