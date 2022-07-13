@@ -15,5 +15,5 @@ rb* converte(btree* bt) {
 }
 
 int verificaCaso(noBt* no){
-    
+    return 0;
 }
