@@ -9,6 +9,20 @@ typedef struct rb rb;
 
 typedef struct noRb noRb;
 
+struct noRb {
+    int chave;
+    char cor;
+    noRb* esq;
+    noRb* dir;
+    noRb* pai;
+};
+
+struct rb {
+    noRb* sentinela;
+    noRb* sentinelaFolha;
+    int numElementos;
+};
+
 //Cria uma nova árvore inicializando a sentinela
 rb* criaArvoreRb();
 
@@ -53,6 +67,9 @@ noRb* getRaiz(rb* arv);
 
 //Retorna a altura da árvore
 int getAltura(noRb* raiz);
+
+//Retorna a sentinelaFolha
+noRb* getNULL(rb* arv);
 
 //******************FUNÇÕES DE BALANCEAMENTO***********************//
 //rotação à esquerda no nó desbalanceado

@@ -7,19 +7,6 @@
   Matheus Martins Batista 2019005687
 */
 
-struct noBt {
-    int* chaves;
-    noBt** ponteiros;
-    noBt* pai;
-    int folha;
-    int ocupacao;
-};
-
-struct btree {
-    int ordem;
-    noBt* raiz;
-};
-
 //Função que aloca e inicializa um novo nó
 noBt* alocaNo(int ordem) {
     noBt* novoNo = (noBt*)malloc(sizeof(noBt));

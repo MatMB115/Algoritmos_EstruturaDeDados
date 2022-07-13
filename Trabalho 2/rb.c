@@ -7,19 +7,6 @@
   Matheus Martins Batista 2019005687
 */
 
-struct noRb {
-    int chave;
-    char cor;
-    noRb* esq;
-    noRb* dir;
-    noRb* pai;
-};
-
-struct rb {
-    noRb* sentinela;
-    noRb* sentinelaFolha;
-    int numElementos;
-};
 
 rb* criaArvoreRb() {
     rb* arv = (rb*)malloc(sizeof(rb));

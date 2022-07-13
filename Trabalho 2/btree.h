@@ -9,6 +9,20 @@ typedef struct noBt noBt;
 
 typedef struct btree btree;
 
+struct noBt {
+    int* chaves;
+    noBt** ponteiros;
+    noBt* pai;
+    int folha;
+    int ocupacao;
+};
+
+struct btree {
+    int ordem;
+    noBt* raiz;
+};
+
+
 //Função que aloca e inicializa um novo nó
 noBt* alocaNo(int ordem);
 
