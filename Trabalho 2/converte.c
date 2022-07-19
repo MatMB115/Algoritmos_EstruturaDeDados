@@ -87,21 +87,21 @@ void converteNos(noBt* btAtual, noRb* rbAtual, rb* rb) {
     }
     else {
         if (rbAtual->chave > novoNo->chave) {
-            rbAtual->dir = novoNo;
+            rbAtual->esq = novoNo;
         }
         else {
-            rbAtual->esq = novoNo;
+            rbAtual->dir = novoNo;
         }
     }
 
     if (btAtual->folha == 0) {
         if (btAtual->ocupacao == 1) {
-            converteNos(btAtual->ponteiros[0], novoNo->esq, rb);
-            converteNos(btAtual->ponteiros[1], novoNo->esq, rb);
+            converteNos(btAtual->ponteiros[0], novoNo, rb);
+            converteNos(btAtual->ponteiros[1], novoNo, rb);
         }
         if (btAtual->ocupacao == 2) {
-            converteNos(btAtual->ponteiros[0], novoNo->esq, rb);
-            converteNos(btAtual->ponteiros[1], novoNo->esq, rb);
+            converteNos(btAtual->ponteiros[0], novoNo, rb);
+            converteNos(btAtual->ponteiros[1], novoNo->dir, rb);
             converteNos(btAtual->ponteiros[2], novoNo->dir, rb);
         }
         if (btAtual->ocupacao == 3) {
