@@ -6,6 +6,7 @@
 //Converte uma BTree 2-3-4 para uma RubroNegra
 rb* converte(btree* bt);
 
-int verificaCaso(noBt* no);
+//Converte os nós da BTree recursivamente
+void converteNos(noBt* btAtual, noRb* rbAtual, rb* rb);
 
 #endif
