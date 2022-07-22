@@ -82,17 +82,23 @@ no* retornaRaiz(btree* arvore) {
 void imprimeArvore(no* atual, int filho) {
     if (atual == NULL) return;
 
+    if (atual->ocupacao == 0) {
+        printf("Vazio");
+
+        return;
+    }
+
     if (atual->folha == 1) {
         for (int i = 0; i < atual->ocupacao; i++) {
             printf("%d ", atual->chaves[i]);
         }
-        printf("\n");
+        printf(" : F\n");
     }
     else {
         for (int i = 0; i < atual->ocupacao; i++) {
             printf("%d ", atual->chaves[i]);
         }
-        printf("\n");
+        printf(" : N Folha\n");
         for (int i = 0; i <= atual->ocupacao; i++) {
             imprimeArvore(atual->ponteiros[i], i);
         }
@@ -186,7 +192,7 @@ int removeElemento(btree* arvore, int valor) {
     }
     noRemove->ocupacao--;
 
-    if (noRemove->ocupacao < (arvore->ordem - 1) / 2) {
+    while (noRemove != NULL && noRemove->ocupacao < (arvore->ordem - 1) / 2 && noRemove != arvore->raiz) {
         no* pai = noRemove->pai;
         int indice = 0;
         while (indice < pai->ocupacao && valor > pai->chaves[indice]) indice++;
@@ -198,7 +204,13 @@ int removeElemento(btree* arvore, int valor) {
             rotacao(noRemove, pai->ponteiros[indice + 1], indice);
         }
         else {
-            merge(noRemove, indice);
+            noRemove = merge(noRemove, indice);
+            if (noRemove->pai == arvore->raiz && noRemove->pai->ocupacao == 0) {
+                free(noRemove->pai);
+                arvore->raiz = noRemove;
+                noRemove->pai = NULL;
+            }
+            noRemove = noRemove->pai;
         }
     }
 
@@ -296,7 +308,16 @@ void rotacao(no* noDesbal, no* irmao, int posPai) {
     no* pai = irmao->pai;
 
     if (pai->ponteiros[posPai - 1] == irmao) {
-        noDesbal->chaves[noDesbal->ocupacao] = pai->chaves[posPai - 1];
+
+        for (int i = noDesbal->ocupacao; i > 0; i--) {
+            noDesbal->chaves[i] = noDesbal->chaves[i - 1];
+            noDesbal->ponteiros[i + 1] = noDesbal->ponteiros[i];
+        }
+        noDesbal->chaves[0] = pai->chaves[posPai - 1];
+        if (noDesbal->folha == 0) {
+            noDesbal->ponteiros[posPai - 1] = irmao->ponteiros[posPai];
+            irmao->ponteiros[posPai - 1]->pai = noDesbal;
+        }
         noDesbal->ocupacao++;
 
         pai->chaves[posPai - 1] = irmao->chaves[irmao->ocupacao - 1];
@@ -307,15 +328,12 @@ void rotacao(no* noDesbal, no* irmao, int posPai) {
         noDesbal->ocupacao++;
 
         pai->chaves[posPai] = irmao->chaves[0];
-
-        int i = irmao->ocupacao - 1;
-
-        for (; i > 0; i--) {
-            irmao->chaves[i - 1] = irmao->chaves[i];
-            irmao->ponteiros[i - 1] = irmao->ponteiros[i];
-        }
-
         irmao->ocupacao--;
+
+        for (int i = 0; i < irmao->ocupacao; i++) {
+            irmao->chaves[i] = irmao->chaves[i + 1];
+            irmao->ponteiros[i] = irmao->ponteiros[i + 1];
+        }
     }
 }
 
@@ -331,15 +349,25 @@ no* merge(no* noDesbal, int posPai) {
         irmao->chaves[irmao->ocupacao] = pai->chaves[posPai - 1];
         irmao->ocupacao++;
         for (int i = 0; i < noDesbal->ocupacao; i++) {
-            irmao->chaves[irmao->ocupacao + i] = noDesbal->chaves[i];
-            irmao->ponteiros[irmao->ocupacao + i] = noDesbal->ponteiros[i];
+            irmao->chaves[irmao->ocupacao] = noDesbal->chaves[i];
+            irmao->ponteiros[irmao->ocupacao] = noDesbal->ponteiros[i];
             irmao->ocupacao++;
         }
-        for (int i = posPai; i < pai->ocupacao; i++) {
+        irmao->ponteiros[irmao->ocupacao] = noDesbal->ponteiros[noDesbal->ocupacao];
+        if (irmao->folha == 0) {
+            for (int i = 0; i <= irmao->ocupacao; i++) {
+                irmao->ponteiros[i]->pai = irmao;
+            }
+        }
+        for (int i = posPai; i <= pai->ocupacao; i++) {
             pai->chaves[i - 1] = pai->chaves[i];
             pai->ponteiros[i] = pai->ponteiros[i + 1];
-            pai->ocupacao--;
         }
+        pai->ocupacao--;
+
+        irmao->pai = pai;
+
+        free(noDesbal);
 
         return irmao;
     }
@@ -348,15 +376,24 @@ no* merge(no* noDesbal, int posPai) {
         noDesbal->chaves[noDesbal->ocupacao] = pai->chaves[posPai];
         noDesbal->ocupacao++;
         for (int i = 0; i < irmao->ocupacao; i++) {
-            noDesbal->chaves[noDesbal->ocupacao + i] = irmao->chaves[i];
-            noDesbal->ponteiros[noDesbal->ocupacao + i] = irmao->ponteiros[i];
+            noDesbal->chaves[noDesbal->ocupacao] = irmao->chaves[i];
+            noDesbal->ponteiros[noDesbal->ocupacao] = irmao->ponteiros[i];
             noDesbal->ocupacao++;
         }
-        for (int i = posPai + 1; i < pai->ocupacao; i++) {
+        noDesbal->ponteiros[noDesbal->ocupacao] = irmao->ponteiros[irmao->ocupacao];
+        if (noDesbal->folha == 0) {
+            for (int i = 0; i <= noDesbal->ocupacao; i++) {
+                noDesbal->ponteiros[i]->pai = noDesbal;
+            }
+        }
+        for (int i = posPai + 1; i <= pai->ocupacao; i++) {
             pai->chaves[i - 1] = pai->chaves[i];
             pai->ponteiros[i] = pai->ponteiros[i + 1];
-            pai->ocupacao--;
         }
+        pai->ocupacao--;
+
+        free(irmao);
+
         return noDesbal;
     }
 
@@ -376,12 +413,12 @@ void manipulaBTree(btree* arvore, char* nomeArquivo, char status) {
     while (fscanf(arq, "%d", &chave) != EOF) {
         if (status == 'i') {
             insereElemento(arvore, chave);
-            printf("\n ###Inseriu %d\n", chave);
+            printf("\n ###Inserir %d\n", chave);
             imprimeArvore(arvore->raiz, 0);
         }
         else if (status == 'r') {
             removeElemento(arvore, chave);
-            printf("\n ###Removeu %d\n", chave);
+            printf("\n ###Remover %d\n", chave);
             imprimeArvore(arvore->raiz, 0);
         }
     }

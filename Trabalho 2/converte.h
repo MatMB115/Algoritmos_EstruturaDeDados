@@ -3,8 +3,7 @@
 #include "btree.h"
 #include "rb.h"
 
-//Converte uma BTree 2-3-4 para uma RubroNegra
-rb* converte(btree* bt);
 
+rb* converte(btree* bt);
 
 #endif
