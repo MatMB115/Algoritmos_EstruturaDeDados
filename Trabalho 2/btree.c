@@ -4,7 +4,7 @@
 
 /*
   Luis Ricardo Albano Santos - 2021031844
-  Matheus Martins Batista 2019005687
+  Matheus Martins Batista - 2019005687
 */
 
 //Função que aloca e inicializa um novo nó

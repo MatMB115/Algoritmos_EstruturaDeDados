@@ -6,13 +6,11 @@
 
 /*
   Luis Ricardo Albano Santos - 2021031844
-  Matheus Martins Batista 2019005687
+  Matheus Martins Batista - 2019005687
 */
 
 // Função que chama as função recursiva para converter a arvore 2-3-4 em uma arvore rubro-negra
 rb* converte(btree* bt) {
-
-    void converteNos(noBt * btAtual, noRb * rbAtual, rb * rb);  //função recursiva para converter a arvore 2-3-4 em uma arvore rubro-negra
 
     rb* rb = criaArvoreRb();    //cria arvore rubro-negra
     noBt* btAtual = retornaRaiz(bt);    //ponteiro para o no raiz da arvore 2-3-4
