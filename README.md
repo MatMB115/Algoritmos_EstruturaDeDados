@@ -14,7 +14,7 @@
 ## Árvore Binárias
  - [x] Árvore Binária de Pesquisa;
  - [x] AVL;
- - [x] Red-Black;
+ - [x] Red-Black.
 ## Árvores Múltiplas
  Árvore B implementada e funcional.
 ## Btree 2-3-4 para Red-Black
